@@ -241,14 +241,14 @@ void printPosOrder(rbtree_Node *root){
 
 void printPreOrder(rbtree_Node *root){
     if(root != NULL){
+        printf("[%d, ", root->value); 
         if(root->color == RED){
             printf("RED]\n");
         }else{
             printf("BLACK]\n");
         }         
         printPreOrder(root->left);        
-        printPreOrder(root->right);
-        printf("[%d, ", root->value);        
+        printPreOrder(root->right);       
     }
 }
 
