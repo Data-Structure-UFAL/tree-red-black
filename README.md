@@ -25,19 +25,19 @@ A árvore rubro-negra é uma estrutura de dados de árvore binária de busca bal
 
 - **createRoot():** Cria uma nova árvore rubro-negra (RBTree) com a raiz inicializada como nula e retorna um ponteiro para essa árvore.
 
-- **insertRedBlack(rbtree *root, int valor):** Insere um novo valor na árvore rubro-negra e mantém o balanceamento.
+- **insertRedBlack(rbtree *root, int valor):**  Insere um novo valor na árvore rubro-negra e mantém o balanceamento.
 
-- **removeRedBlack(rbtree *root, int valor):** Remove um valor da árvore rubro-negra e mantém o balanceamento.
+- **removeRedBlack(rbtree *root, int valor):**  Remove um valor da árvore rubro-negra e mantém o balanceamento.
 
-- **alturaNo(rbtree_Node *root, int valor):** Retorna a altura em que um nó específico com o valor dado está localizado na árvore.
+- **alturaNo(rbtree_Node *root, int valor):**  Retorna a altura em que um nó específico com o valor dado está localizado na árvore.
 
-- **alturaBlack(rbtree_Node *root):** Retorna a altura negra da árvore, ou seja, o número de nós pretos ao longo do caminho mais longo da raiz a uma folha.
+- **alturaBlack(rbtree_Node *root):**  Retorna a altura negra da árvore, ou seja, o número de nós pretos ao longo do caminho mais longo da raiz a uma folha.
 
-- **printOrder(rbtree_Node *root):** Imprime os valores da árvore em ordem.
+- **printOrder(rbtree_Node *root):**  Imprime os valores da árvore em ordem.
 
-- **printPosOrder(rbtree_Node *root):** Imprime os valores da árvore em pós-ordem.
+- **printPosOrder(rbtree_Node *root):**  Imprime os valores da árvore em pós-ordem.
 
-- **printPreOrder(rbtree_Node *root):** Imprime os valores da árvore em pré-ordem.
+- **printPreOrder(rbtree_Node *root):**  Imprime os valores da árvore em pré-ordem.
 
 Estes são alguns dos principais comandos no código fornecido, responsáveis pela manipulação e manutenção de uma árvore rubro-negra.
 
