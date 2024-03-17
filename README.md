@@ -55,7 +55,4 @@ Se você quiser contribuir para este projeto, siga estas etapas:
 
 Este projeto está licenciado sob a licença [MIT](LICENSE.md) - veja o arquivo LICENSE.md para detalhes.
 
-## Contato
-
-Se você tiver alguma dúvida ou sugestão sobre este projeto, não hesite em entrar em contato comigo por e-mail (seu-email@example.com).
 
