@@ -39,6 +39,8 @@ int main(){
                 printf("\n");
                 printPreOrder(t->root);
                 printf("\n");
+                printPreOrderComCor(t->root);
+                printf("\n\n");
                 break;
             case 5:
                 printf("\n");

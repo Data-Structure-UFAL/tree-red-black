@@ -3,6 +3,12 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+#define RED_COLOR   "\033[0;31m"
+#define GREEN_COLOR "\033[0;32m"
+#define YELLOW_COLOR "\033[0;33m"
+#define BLUE_COLOR  "\033[0;34m"
+#define RESET_COLOR "\033[0m"
+
 // Função para criar um novo nó
 rbtree_Node* rbtree_createNode(int value) {
     rbtree_Node* newNode = (rbtree_Node*)malloc(sizeof(rbtree_Node));
@@ -249,6 +255,24 @@ void printPreOrder(rbtree_Node *root){
         }         
         printPreOrder(root->left);        
         printPreOrder(root->right);       
+    }
+}
+
+void printPreOrderComCor(rbtree_Node *root){
+    if(root != NULL){
+        printf("(");
+        if(root->color==RED){
+            printf(RED_COLOR);
+        }
+        printf("%d", root->value);
+        if(root->color==RED){
+            printf(RESET_COLOR);
+        }               
+        printPreOrderComCor(root->left);        
+        printPreOrderComCor(root->right);
+        printf(")");     
+    }else{
+        printf("()");   
     }
 }
 
