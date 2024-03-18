@@ -2,6 +2,47 @@
 #include <stdlib.h>
 #include "rbtree.c"
 
+void openPNG(const char *filename) {
+    char command[100];
+    sprintf(command, "xdg-open %s", filename);
+    system(command);
+}
+
+
+void generatePNG(const char *dotFilename, const char *pngFilename) {
+    char command[1000]; // Tamanho do comando pode variar de acordo com o sistema operacional
+    sprintf(command, "dot -Tpng %s -o %s", dotFilename, pngFilename);
+    system(command);
+}
+
+void writeNode(FILE *file, rbtree_Node *node) {
+    if (node != NULL) {
+        fprintf(file, "%d [label=\"%d\", color=%s];\n", node->value, node->value, node->color == RED ? "red" : "black");
+        if (node->left != NULL) {
+            fprintf(file, "%d -> %d;\n", node->value, node->left->value);
+            writeNode(file, node->left);
+        }
+        if (node->right != NULL) {
+            fprintf(file, "%d -> %d;\n", node->value, node->right->value);
+            writeNode(file, node->right);
+        }
+    }
+}
+
+void generateDotFile(rbtree_Node *root, const char *filename) {
+    FILE *file = fopen(filename, "w");
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo para escrita.");
+        return;
+    }
+
+    fprintf(file, "digraph RedBlackTree {\n");
+    writeNode(file, root);
+    fprintf(file, "}\n");
+
+    fclose(file);
+}
+
 int main(){
     rbtree *t = createRoot();
     int op, n;
@@ -58,7 +99,10 @@ int main(){
                 }
                 break;
             case 7:
-                printf("\nSaindo......\n");
+                generateDotFile(t->root, "arvore.dot");
+                generatePNG("arvore.dot", "arvore.png");
+                printf("\nGerando a árvore em PNG...\n");
+                openPNG("arvore.png");
                 exit(1);
                 break;
             default:
@@ -68,6 +112,7 @@ int main(){
 
 
     }
+
 
 
 
