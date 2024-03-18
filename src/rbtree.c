@@ -171,10 +171,6 @@ void insertCaso3(rbtree *root, rbtree_Node *rb){
 
 //rotação
 void insertCaso4(rbtree *root, rbtree_Node *rb){
-    printf("\n");
-    //printf("Rotacionando para que o pai(%d) e o tio(%d, ", rb->parent->value, tio(rb)->value);
-    //tio(rb)->color == BLACK ? printf("BLACK)\n") : printf("RED)\n");
-    printf("\n");
     if(rb == rb->parent->right && rb->parent == avo(rb)->left){
         //Esquerdo-Direito
         printf("\n");

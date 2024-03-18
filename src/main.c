@@ -26,6 +26,8 @@ void writeNode(FILE *file, rbtree_Node *node) {
             fprintf(file, "%d -> %d;\n", node->value, node->right->value);
             writeNode(file, node->right);
         }
+    }else{
+        fprintf(file, "Adiciona pelo menos um nó na árvore, na moralzinha :)\n");
     }
 }
 
@@ -55,7 +57,7 @@ int main(){
         printf("4.Árvore em pré-ordem\n");
         printf("5.Árvore em pós-ordem\n");
         printf("5.Buscar\n");
-        printf("7.Sair\n");
+        printf("7.Sair e gerar visualização da árvore\n");
         scanf("%d",&op);
 
         switch (op){
@@ -109,7 +111,6 @@ int main(){
                 printf("Valor inválido!\n");
                 break;
     }
-
 
     }
 
