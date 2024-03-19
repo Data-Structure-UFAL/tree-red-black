@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "rbtree.c"
+#include <limits.h>
 
 void openPNG(const char *filename) {
     char command[100];
@@ -45,19 +46,35 @@ void generateDotFile(rbtree_Node *root, const char *filename) {
     fclose(file);
 }
 
+int randomValue(int min, int max) {
+    return min + rand() % (max - min + 1);
+}
+
+// Função para inserir valores aleatórios na árvore
+void insertRandomValues(rbtree *t, int count) {
+    int i;
+    for (i = 0; i < count; i++) {
+        int value = randomValue(1, INT_MAX); // Intervalo de valores aleatórios de 1 a 100
+        insertRedBlack(t, value);
+    }
+}
+
+
 int main(){
     rbtree *t = createRoot();
     int op, n;
     while(1){
         printf("Olá, coleguinha!\n");
         printf("\nO que deseja?\n");
-        printf("1.Inserir\n");
+        printf("\n1.Inserir\n");
         printf("2.Remover\n");
         printf("3.Árvore em Ordem\n");
         printf("4.Árvore em pré-ordem\n");
         printf("5.Árvore em pós-ordem\n");
-        printf("5.Buscar\n");
-        printf("7.Sair e gerar visualização da árvore\n");
+        printf("6.Buscar\n");
+        printf("7.Gerar visualização da árvore\n");
+        printf("8.Inserir x valores random\n");
+        printf("9.Sair\n");
         scanf("%d",&op);
 
         switch (op){
@@ -101,10 +118,19 @@ int main(){
                 }
                 break;
             case 7:
+                printf("\nGerando a árvore em PNG...\n");
                 generateDotFile(t->root, "arvore.dot");
                 generatePNG("arvore.dot", "arvore.png");
-                printf("\nGerando a árvore em PNG...\n");
                 openPNG("arvore.png");
+                break;
+            case 8:
+                printf("\nQuantidade de valores aleatórios a serem inseridos: ");
+                scanf("%d", &n);
+                insertRandomValues(t, n);
+                printf("\n%d valores aleatórios inseridos com sucesso!\n\n", n);
+                break;
+            case 9:
+                printf("\nSaindo...\n");
                 exit(1);
                 break;
             default:
@@ -113,10 +139,6 @@ int main(){
     }
 
     }
-
-
-
-
 
     return 0;
 }

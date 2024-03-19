@@ -1,3 +1,9 @@
 digraph RedBlackTree {
-Adiciona pelo menos um nó na árvore, na moralzinha :)
+324 [label="324", color=black];
+324 -> 2;
+2 [label="2", color=black];
+2 -> 234;
+234 [label="234", color=red];
+324 -> 4325;
+4325 [label="4325", color=black];
 }

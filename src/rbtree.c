@@ -23,6 +23,7 @@ rbtree_Node* rbtree_createNode(int value) {
 rbtree * createRoot(){
     rbtree * root = malloc(sizeof(rbtree));
     root->root = NULL;
+    root->rotations=0;
     return root;
 }
 
@@ -61,6 +62,7 @@ void replace_node(rbtree *t, rbtree_Node *oldN, rbtree_Node *newN){
     if(oldN->parent == NULL){
         t->root = newN;
     }else{
+        //avo recebe o pai
         if(oldN == oldN->parent->left){
             oldN->parent->left = newN;
         }else{
@@ -74,6 +76,8 @@ void replace_node(rbtree *t, rbtree_Node *oldN, rbtree_Node *newN){
 
 void rotateLeft(rbtree *root, rbtree_Node * rb){
     rbtree_Node * r = rb->right;
+    //printf("direito %d\n", rb->right->value);
+    //printf("old %d\n", rb->value);
     replace_node(root, rb, r);
     rb->right = r->left;
     if(r->left != NULL){
@@ -81,6 +85,7 @@ void rotateLeft(rbtree *root, rbtree_Node * rb){
     }
     r->left = rb;
     rb->parent = r;
+    (root->rotations)++;
 }
 
 void rotateRight(rbtree *root, rbtree_Node * rb){
@@ -92,6 +97,7 @@ void rotateRight(rbtree *root, rbtree_Node * rb){
     }
     r->right = rb;
     rb->parent = r;
+    (root->rotations)++;
 }
 
 void insertRedBlack(rbtree *root, int valor){
@@ -148,6 +154,7 @@ void insertCaso2(rbtree *root, rbtree_Node *rb){
 
 void insertCaso3(rbtree *root, rbtree_Node *rb){
     if(node_color(tio(rb)) == BLACK){
+        //printf("tio eh %d\n", tio(rb)->value);
         insertCaso4(root, rb);
     }else{
         printf("\n");
@@ -212,6 +219,7 @@ void insertCaso5(rbtree *root, rbtree_Node *rb){
         printf("Novo filho a direita: %d\n", rb->value);
         printf("\n");
         rotateLeft(root, avo(rb));
+        //A GENTE JOGA O AVOOOOOOOOOOOOOOO
     }
 }
 

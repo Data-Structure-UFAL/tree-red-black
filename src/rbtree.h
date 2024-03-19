@@ -12,9 +12,9 @@ typedef struct rbtree_Node {
     enum node_color color;
 } rbtree_Node;
 
-// Definição da árvore
 typedef struct rbtree {
     struct rbtree_Node * root;
+    int rotations;
 } rbtree;
 
 typedef enum node_color color;
