@@ -2,7 +2,7 @@
 
 ## Resumo
 
-A <a href="https://docs.google.com/presentation/d/1l3z4EVPE3h6Xa4xxBb4vc6YDd5fugSGv9pK6AKOjhMQ/edit#slide=id.g1f40626c2c7_0_31">árvore rubro-negra</a>  é uma estrutura de dados de árvore binária de busca balanceada que garante um tempo de busca, inserção e remoção de O(log n), onde n é o número de elementos na árvore. Essa estrutura de dados mantém o equilíbrio por meio de regras de coloração e rotações, garantindo que a altura da árvore seja sempre O(log n).
+A <a href="https://docs.google.com/presentation/d/18d4m9MGidmlZBwotcEl8T2wUWW7a2rIQhQIDV4XQIfM/edit?usp=sharing">árvore rubro-negra</a>  é uma estrutura de dados de árvore binária de busca balanceada que garante um tempo de busca, inserção e remoção de O(log n), onde n é o número de elementos na árvore. Essa estrutura de dados mantém o equilíbrio por meio de regras de coloração e rotações, garantindo que a altura da árvore seja sempre O(log n).
 
 ## Principais Características
 
