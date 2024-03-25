@@ -50,11 +50,11 @@ int randomValue(int min, int max) {
     return min + rand() % (max - min + 1);
 }
 
-// Função para inserir valores aleatórios na árvore
+
 void insertRandomValues(rbtree *t, int count) {
     int i;
     for (i = 0; i < count; i++) {
-        int value = randomValue(1, INT_MAX); // Intervalo de valores aleatórios de 1 a 100
+        unsigned int value = randomValue(1, 2000); 
         insertRedBlack(t, value);
     }
 }
@@ -74,7 +74,8 @@ int main(){
         printf("6.Buscar\n");
         printf("7.Gerar visualização da árvore\n");
         printf("8.Inserir x valores random\n");
-        printf("9.Sair\n");
+        printf("9.Nó mais distante da raiz\n");
+        printf("10.Sair\n");
         scanf("%d",&op);
 
         switch (op){
@@ -130,6 +131,9 @@ int main(){
                 printf("\n%d valores aleatórios inseridos com sucesso!\n\n", n);
                 break;
             case 9:
+                printf("Nó com maior profundidade encontrado: %d\n", maxDepthValue(t->root));
+                break;
+            case 10:
                 printf("\nSaindo...\n");
                 exit(1);
                 break;

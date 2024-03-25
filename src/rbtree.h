@@ -33,11 +33,10 @@ void replace_node(rbtree *t, rbtree_Node *oldN, rbtree_Node *newN);
 void rotateLeft(rbtree *root, rbtree_Node * rb);
 void rotateRight(rbtree *root, rbtree_Node * rb);
 
+void is_root(rbtree *root, rbtree_Node *rb);
 void insertCaso1(rbtree *root, rbtree_Node *rb);
 void insertCaso2(rbtree *root, rbtree_Node *rb);
 void insertCaso3(rbtree *root, rbtree_Node *rb);
-void insertCaso4(rbtree *root, rbtree_Node *rb);
-void insertCaso5(rbtree *root, rbtree_Node *rb);
 void printOrder(rbtree_Node *root);
 void printPosOrder(rbtree_Node *root);
 void printPreOrder(rbtree_Node *root);
@@ -48,14 +47,14 @@ void removeCaso3(rbtree *root, rbtree_Node *rb);
 void removeCaso4(rbtree *root, rbtree_Node *rb);
 void removeCaso5(rbtree *root, rbtree_Node *rb);
 void removeCaso6(rbtree *root, rbtree_Node *rb);
+int alturaBlack(rbtree_Node *root);
 
 void insertRedBlack(rbtree *root, int valor);
-int alturaBlack(rbtree_Node *root);
 void removeRedBlack(rbtree *root, int valor);
-int encontrarAltura(rbtree_Node *root, int valor, int alturaAtual);
+int buscar(rbtree_Node *root, int valor, int alturaAtual);
 int alturaNo(rbtree_Node *root, int valor);
-//void rbtree_insert(rbtree *tree, void* value);
-//void rbtree_inorder(rbtree_Node *root);
+rbtree_Node* maxDepthNode(rbtree_Node* root);
+
 
 
 

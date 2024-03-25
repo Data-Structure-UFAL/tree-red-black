@@ -42,6 +42,22 @@ rbtree_Node * maxNode(rbtree_Node *rb){
     return rb;
 }
 
+int maxDepthValue(rbtree_Node* root) {
+    // Se o nó atual for nulo, retornamos -1
+    if (root == NULL) {
+        return -1;
+    }
+
+    // Chamamos recursivamente a função para os filhos esquerdo e direito
+    int leftDepth = maxDepthValue(root->left);
+    int rightDepth = maxDepthValue(root->right);
+
+    // Calculamos a altura do nó como o máximo entre as alturas dos filhos mais 1
+    return 1 + (leftDepth > rightDepth ? leftDepth : rightDepth);
+}
+
+
+
 rbtree_Node * avo(rbtree_Node *n){
     return n->parent->parent;
 }
@@ -58,54 +74,53 @@ rbtree_Node *tio(rbtree_Node *n){
     return irmao(n->parent);
 }
 
-void replace_node(rbtree *t, rbtree_Node *oldN, rbtree_Node *newN){
-    if(oldN->parent == NULL){
-        t->root = newN;
+void replace_node(rbtree *t, rbtree_Node *parentNode, rbtree_Node *sonNode){
+    if(parentNode->parent == NULL){
+        //pai é null? parentNode é raiz
+        //nova raiz é sonNode
+        t->root = sonNode;
     }else{
-        //avo recebe o pai
-        if(oldN == oldN->parent->left){
-            oldN->parent->left = newN;
+         //sonNode no lugar de parentNode
+        if(parentNode == parentNode->parent->left){
+            parentNode->parent->left = sonNode;
         }else{
-            oldN->parent->right = newN;
+            parentNode->parent->right = sonNode;
         }
     }
-    if(newN != NULL){
-        newN->parent = oldN->parent;
+    if(sonNode != NULL){
+        //atualizando o pai
+        sonNode->parent = parentNode->parent;
     }
 }
 
-void rotateLeft(rbtree *root, rbtree_Node * rb){
-    rbtree_Node * r = rb->right;
-    //printf("direito %d\n", rb->right->value);
-    //printf("old %d\n", rb->value);
-    replace_node(root, rb, r);
-    rb->right = r->left;
-    if(r->left != NULL){
-        r->left->parent = rb;
+void rotateLeft(rbtree *root, rbtree_Node * parent){
+    rbtree_Node * son = parent->right;
+    replace_node(root, parent, son);
+    parent->right = son->left;
+    if(son->left != NULL){
+        son->left->parent = parent;
     }
-    r->left = rb;
-    rb->parent = r;
-    (root->rotations)++;
+    son->left = parent;
+    parent->parent = son;
 }
 
-void rotateRight(rbtree *root, rbtree_Node * rb){
-    rbtree_Node * r = rb->left;
-    replace_node(root, rb, r);
-    rb->left = r->right;
-    if(r->right != NULL){
-        r->right->parent = rb;
+void rotateRight(rbtree *root, rbtree_Node * parent){
+    rbtree_Node * son = parent->left;
+    replace_node(root, parent, son);
+    parent->left = son->right;
+    if(son->right != NULL){
+        son->right->parent = parent;
     }
-    r->right = rb;
-    rb->parent = r;
-    (root->rotations)++;
+    son->right = parent;
+    parent->parent = son;
 }
 
-void insertRedBlack(rbtree *root, int valor){
+void insertRedBlack(rbtree *rbtree_root, int valor){
     rbtree_Node *newRB = rbtree_createNode(valor);
-    if(root->root == NULL){
-        root->root = newRB;
+    if(rbtree_root->root == NULL){
+        rbtree_root->root = newRB;
     }else{
-        rbtree_Node *rb = root->root;
+        rbtree_Node *rb = rbtree_root->root;
         while(1){
             if(valor == rb->value){
                 free(newRB);
@@ -128,98 +143,56 @@ void insertRedBlack(rbtree *root, int valor){
         }
         newRB->parent = rb;
     }
-    insertCaso1(root, newRB);
+    is_root(rbtree_root, newRB);
 }
 
 //caso raiz
-void insertCaso1(rbtree *root, rbtree_Node *rb){
+void is_root(rbtree *root, rbtree_Node *rb){
     if(rb->parent == NULL){
         rb->color = BLACK;
     }else{
-        insertCaso2(root, rb);
+        insertCaso1(root, rb);
     }
 }
-
-
-void insertCaso2(rbtree *root, rbtree_Node *rb){
-    if(rb->parent->color == BLACK){
-        return; //raiz é preta? a árvore está balanceada
-    }else{
-        insertCaso3(root, rb);
-    }
-}
-
 //nós vermelhos adjacentes
 //recolorir pai, tio e avô
+void insertCaso1(rbtree *root, rbtree_Node *son){
+    if(son->parent->color == BLACK) return;
+    //pai é preto? a árvore está balanceada
 
-void insertCaso3(rbtree *root, rbtree_Node *rb){
-    if(node_color(tio(rb)) == BLACK){
-        //printf("tio eh %d\n", tio(rb)->value);
-        insertCaso4(root, rb);
+    if(node_color(tio(son)) == BLACK){
+        insertCaso2(root, son);
     }else{
-        printf("\n");
-        printf("Pai e filho vermelhos\n");
-        printf("Balanceando e ajustando cores do pai(%d), tio(%d) e avô(%d)...\n", rb->parent->value, tio(rb)->value, avo(rb)->value);
-        printf("\n");
-        rb->parent->color = BLACK;
-        tio(rb)->color = BLACK;
-        avo(rb)->color = RED;
-        if(avo(rb)->parent==NULL){
-            printf("Vôzinho é a raiz e ele é ");
-            if(avo(rb)->color == RED){
-                printf("RED(%d)\n", avo(rb)->value);
-            }else{
-                printf("BLACK(%d), então fere a propriedade 2\nTrocando cor...\n", avo(rb)->value);
-            }   
-        }
-        insertCaso1(root, avo(rb)); //chamada para trocar a cor do avô (raiz) de red para black, pela propriedade 2
+        son->parent->color = BLACK;
+        tio(son)->color = BLACK;
+        avo(son)->color = RED;
+        is_root(root, avo(son)); 
+        /*chamada para trocar a cor do avô (raiz)
+         de red para black, pela propriedade 2*/
     }
 }
 
 //rotação
-void insertCaso4(rbtree *root, rbtree_Node *rb){
-    if(rb == rb->parent->right && rb->parent == avo(rb)->left){
+void insertCaso2(rbtree *root, rbtree_Node *son){
+    if(son == son->parent->right && son->parent == avo(son)->left){
         //Esquerdo-Direito
-        printf("\n");
-        printf("%d é filho a direita do pai(%d), e o pai é filho a esquerda do avo(%d)\n", rb->value, rb->parent->value, avo(rb)->value);
-        printf("Rotacionando a esquerda...\n");
-        printf("\n");
-        rotateLeft(root, rb->parent);
-        rb = rb->left;
-    }else if(rb == rb->parent->left && rb->parent == avo(rb)->right){
+        rotateLeft(root, son->parent);
+        son = son->left;
+    }else if(son == son->parent->left && son->parent == avo(son)->right){
         //Direito-Esquerdo
-        printf("\n");
-        printf("%d é filho a esquerda do pai(%d), e o pai é filho a direita do avo(%d)\n", rb->value, rb->parent->value, avo(rb)->value);
-        printf("Rotacionndo a direita...\n");
-        printf("\n");
-        rotateRight(root, rb->parent);
-        rb = rb->right;
+        rotateRight(root, son->parent);
+        son = son->right;
     }
-    insertCaso5(root, rb);
+    insertCaso3(root, son);
 }
 
-void insertCaso5(rbtree *root, rbtree_Node *rb){
-    rb->parent->color = BLACK;
-    avo(rb)->color = RED;
-    if(rb == rb->parent->left && rb->parent == avo(rb)->left){
-        printf("\n");
-        printf("%d é filho a esquerda do pai(%d), e o pai é filho a esquerda do avo(%d)\n", rb->value, rb->parent->value, avo(rb)->value);
-        printf("Rotacionando a direita...\n");
-        printf("Nova raiz (pai): %d\n", rb->parent->value);
-        printf("Novo filho a esquerda: %d\n", rb->value);
-        printf("Novo filho a direita: %d\n", avo(rb)->value);
-        printf("\n");
-        rotateRight(root, avo(rb));
+void insertCaso3(rbtree *root, rbtree_Node *son){
+    son->parent->color = BLACK;
+    avo(son)->color = RED;
+    if(son == son->parent->left && son->parent == avo(son)->left){
+        rotateRight(root, avo(son));
     }else{
-        printf("\n");
-        printf("%d é filho a direita do pai(%d), e o pai é filho a direita do avo(%d)\n", rb->value, rb->parent->value, avo(rb)->value);
-        printf("Rotacionando a esquerda...\n");
-        printf("Nova raiz (pai): %d\n", rb->parent->value);
-        printf("Novo filho a esquerda: %d\n", avo(rb)->value);
-        printf("Novo filho a direita: %d\n", rb->value);
-        printf("\n");
-        rotateLeft(root, avo(rb));
-        //A GENTE JOGA O AVOOOOOOOOOOOOOOO
+        rotateLeft(root, avo(son));
     }
 }
 
@@ -386,7 +359,7 @@ void removeCaso6(rbtree * root, rbtree_Node * rb){
 }
 
 // Função auxiliar recursiva para encontrar um nó na árvore e retornar a altura
-int encontrarAltura(rbtree_Node *root, int valor, int alturaAtual) {
+int buscar(rbtree_Node *root, int valor, int alturaAtual) {
     // Se o nó atual for nulo, retornamos -1, indicando que o valor não foi encontrado
     if (root == NULL) {
         return -1;
@@ -399,18 +372,18 @@ int encontrarAltura(rbtree_Node *root, int valor, int alturaAtual) {
     
     // Se o valor procurado for menor que o valor do nó atual, recursivamente buscamos na subárvore esquerda
     if (valor < root->value) {
-        return encontrarAltura(root->left, valor, alturaAtual + 1);
+        return buscar(root->left, valor, alturaAtual + 1);
     }
     // Se o valor procurado for maior que o valor do nó atual, recursivamente buscamos na subárvore direita
     else {
-        return encontrarAltura(root->right, valor, alturaAtual + 1);
+        return buscar(root->right, valor, alturaAtual + 1);
     }
 }
 
 // Função para encontrar um nó na árvore e retornar a altura em que se encontra
 int alturaNo(rbtree_Node *root, int valor) {
     // Chamamos a função auxiliar passando a altura inicial como 0
-    return encontrarAltura(root, valor, 0);
+    return buscar(root, valor, 0);
 }
 
 
